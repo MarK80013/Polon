@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szkolenie Polon4000</title>
+    <link rel="stylesheet" href="style.css">
+    </style>
+</head>
+<body>
+    
+    <h1>Symulator Polon4000</h1>
+        <div class="container linki">
+            <div class="status" id="systemStatus">Status: Normalny</div>
+            <div class="status">Strefy: <span id="zonesStatus">Wszystkie OK</span></div>
+            <div class="button1" onclick="pożar()">POŻAR</div> <!-- Dodano klasę 'pożar' -->
+            <div class="button1" onclick="resetSystem()">Reset</div> <!-- Dodano klasę 'reset' -->
+            <div class="button1" onclick="Instrukcje()">Instrukcje</div> <!-- Dodano klasę 'instrukcje' -->
+        </div>
+
+        <div class="image-background">
+            <img src="tło.jpg" alt="Zdjęcie" width="700" height="auto"></div>
+            <div class="led" id="potwierdzenieled"></div> 
+            <div class="led" id="kasowanieled"></div> 
+            <div class="led" id="zasilanieled"></div> 
+            <div class="button" id="potwierdzenie" onclick="potwierdzenie()"></div> 
+            <div class="button" id="kasowanie" onclick="kasowanie()"></div> 
+            <div id="log"></div>
+        </div> 
+         
+        
+    <script>
+        let isArmed = false;
+        let isAlarmActive = false;
+        let isFault = false;
+        let zones = Array(8).fill(true); // 8 stref
+
+        function updateLeds() {
+            document.getElementById('zasilanieled').style.backgroundColor = '#2ecc71';
+            document.getElementById('kasowanieled').style.backgroundColor = isAlarmActive ? '#e74c3c' : '#555';
+            document.getElementById('pożarLed').style.backgroundColor = isFault ? '#e67e22' : '#555';
+        }
+
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += `<div>${new Date()
+                .toLocaleTimeString()}:
+                 ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function pożar() {
+            isArmed = !isArmed;
+            isAlarmActive = isArmed; // Ustaw alarm na aktywny, gdy system jest uzbrojony (w przypadku pożaru)
+            document.getElementById('systemStatus')
+            .textContent = `Status:
+             ${isArmed ? 'POŻAR' : 'Skasowany'}`;// Ustaw tekst pola status)
+            log(`. ${isArmed ? 'pożar' : '.'}`);// Ustaw tekst pola log)
+
+            if (isArmed) {
+                updateLeds(); // Aktualizuj diody
+                potwierdzenieButton.classList.add('miganie'); // Dodajemy klasę 'miganie'
+                kasowanieButton.classList.add('miganie'); // Dodajemy klasę 'miganie'
+            } else {
+                isAlarmActive = false;
+                updateLeds();
+                potwierdzenieButton.classList.remove('miganie'); // Usuwamy klasę 'miganie'
+                kasowanieButton.classList.remove('miganie'); // Usuwamy klasę 'miganie'
+            }
+        }
+
+        function potwierdzenie() {
+            if (!isAlarmActive) {
+                isArmed = false;
+                isFault = false;
+                zones = zones.map(() => true);
+                updateLeds();
+                document.getElementById('systemStatus').textContent = 'Status: Normalny';
+                document.getElementById('zonesStatus').textContent = 'Wszystkie OK';
+                log('System zresetowany');
+            }
+        }
+
+        function kasowanie() {
+            if (isAlarmActive) {
+                isAlarmActive = false;
+                updateLeds();
+                log('Alarm wyciszony');
+            }
+        }
+
+        function resetSystem() {
+            if (!isAlarmActive) {
+                isArmed = false;
+                isFault = false;
+                zones = zones.map(() => true);
+                updateLeds();
+                document.getElementById('systemStatus').textContent = 'Status: Normalny';
+                document.getElementById('zonesStatus').textContent = 'Wszystkie OK';
+                log('System zresetowany');
+            }
+        }
+/*
+        function checkZones() {
+            if (isArmed) {
+                const randomZone = Math.floor(Math.random() * 8);
+                if (Math.random() < 1) { // 30% szans na awarię strefy
+                    zones[randomZone] = false;
+                    isFault = true;
+                    isAlarmActive = true; // Ustaw isAlarmActive na true w checkZones
+                    document.getElementById('zonesStatus').textContent = `Awaria strefy ${randomZone + 1}`;
+                    log(`Awaria strefy ${randomZone + 1}!`);
+                    updateLeds();
+                }
+            }
+        }
+*/
+        function Instrukcje() {
+            window.location.href = 'POLON/strona2.html';
+        }
+
+        // Inicjalizacja
+        updateLeds();
+        log('System gotowy do pracy');
+    </script>
+</body>
+</html>

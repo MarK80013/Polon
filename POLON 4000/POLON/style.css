@@ -1,0 +1,12 @@
+/* Możesz tu dodać swoje style, np. */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    button {
+        width: 300px;
+        height: 100px;
+        margin: 100px;
+        padding: 5px;
+        font-size: 20px;
+      }
+}

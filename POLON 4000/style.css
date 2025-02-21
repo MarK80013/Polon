@@ -1,0 +1,128 @@
+/* Możesz tu dodać swoje style, np. */
+html, 
+body {
+    
+    font-family: Arial, sans-serif;
+    /*  background-image: url("polon 4000.jpg"); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;*/
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* Zapewnia minimalną wysokość body */
+}
+.container.linki, .container.image-background, #zasilanieled, #potwierdzenieled, #kasowanieled, #log {
+    position: absolute;
+}
+
+#log {
+    transform: translate(-57%, 107%);
+    background-color: rgba(0, 0, 0, 0.8);
+    width: var(--log-width, 191px); /* Dodano zmienną dla szerokości */
+    height: var(--log-height, 140px); /* Dodano zmienną dla wysokości */
+    margin: 20px;
+    padding: 10px;
+    overflow-y: auto;
+    border: 1px solid #000000;
+    color: white;
+}
+
+.button {    /* przyciski potw i kasow */
+    background-color: transparent;
+    color: white;
+    border: 2px solid #7f8c8d;/* Dodaje obramowanie do elementu, również wpływając na jego rozmiar. */
+    padding: 10px 15px;/* Dodaje wewnętrzny margines do elementu, zwiększając jego rozmiar. */
+    margin: 0px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 5px;
+    border: 2px solid #000;
+    font-size: 14px;/* Rozmiar czcionki wewnątrz przycisku może wpływać na jego wysokość */
+    width: 2px;/* Określa szerokość elementu. Można podać wartość w pikselach (px), procentach (%), jednostkach em (em) lub innych jednostkach miary */
+    height: 10px;/* kreśla wysokość elementu. Podobnie jak width, można podać wartość w różnych jednostkach */
+    text-align: center;
+}
+    #potwierdzenie {
+        position: relative; /* Pozostawiamy pozycjonowanie relatywne */
+        left: 77px; /* Ustawiamy odległość od lewej krawędzi kontenera */
+        top: -513px; /* Ustawiamy odległość od górnej krawędzi kontenera */
+        transform: translate(0, 0); /* Usuwamy transformację */
+    }
+    #kasowanie {
+        position: relative; /* Pozostawiamy pozycjonowanie relatywne */
+        left: 209px; /* Ustawiamy odległość od lewej krawędzi kontenera */
+        top: -545px; /* Ustawiamy odległość od górnej krawędzi kontenera */
+        transform: translate(0, 0); /* Usuwamy transformację */
+    }
+
+.container.linki {
+    top: var(--pozar-top, 10%);
+    left: var(--pozar-left, 10%);
+    transform: translate(0%, 0%);
+}
+.button1 {        /* przyciski linki */
+    background-color: #34495e;
+    color: white;
+    border: 2px solid #7f8c8d;
+    padding: 15px 20px; /* wysokość, szerokość przycisku */
+    margin: 25px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    border-radius: 10px; /* zaokrąglenie rogów przycisku*/
+    font-size: 14px;
+    width: 120px;
+    text-align: center;
+}
+
+.status {    /* okna statusu */
+    background-color: rgba(44, 62, 80, 0.7);
+    color: white;
+    padding: 8px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.led {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin: 5px;
+    display: inline-block;
+    background-color: #555; /* Domyślny kolor LED-a - możesz go zmienić */
+    animation: pulsate 1s infinite; /* Nazwa animacji i czas trwania */
+
+}
+.miganie {
+    animation: pulsate 1s infinite; /* Czas trwania i ilość powtórzeń animacji */
+}
+
+@keyframes pulsate {
+    0% {
+        box-shadow: 0 0 5px 5px rgba(224, 5, 5, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 5px 10px rgba(224, 33, 12, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 15px 15px rgba(235, 26, 3, 0.3);
+    }
+}
+    #potwierdzenieled{
+            transform: translate(67px,442px)
+    }
+    #kasowanieled{
+            transform: translate(198px, 443px)
+     }
+    #zasilanieled{
+            transform: translate(-267px, 667px)
+    }
+
+.active {
+    background-color: #e74c3c;
+}
