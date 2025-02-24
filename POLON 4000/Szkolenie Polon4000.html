@@ -3,125 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Szkolenie Polon4000</title>
+    <title>Szkolenie Polon 4000</title>
     <link rel="stylesheet" href="style.css">
-    </style>
 </head>
 <body>
+    <div class="background-image">  
+        <img src="ORLEN 3.jpg" >
+    </div>
     
-    <h1>Symulator Polon4000</h1>
-        <div class="container linki">
-            <div class="status" id="systemStatus">Status: Normalny</div>
-            <div class="status">Strefy: <span id="zonesStatus">Wszystkie OK</span></div>
-            <div class="button1" onclick="pożar()">POŻAR</div> <!-- Dodano klasę 'pożar' -->
-            <div class="button1" onclick="resetSystem()">Reset</div> <!-- Dodano klasę 'reset' -->
-            <div class="button1" onclick="Instrukcje()">Instrukcje</div> <!-- Dodano klasę 'instrukcje' -->
-        </div>
 
+    <div class="container linki">
+        <img src="Obraz6.png" height="30%" width="30%">
+        <div class="status" id="systemStatus">Status: Normalny</div>
+        <div class="status">Strefy: <span id="zonesStatus">Wszystkie OK</span></div>
+        <div class="button1" onclick="pożar()">POŻAR</div> <!-- Dodano klasę 'pożar' -->
+        <div class="button1" onclick="resetSystem()">Reset</div> <!-- Dodano klasę 'reset' -->
+        <div class="button1" onclick="Instrukcje()">Instrukcje</div> <!-- Dodano klasę 'instrukcje' -->
+    </div>
+    
+    <div class="container centralka">
         <div class="image-background">
-            <img src="tło.jpg" alt="Zdjęcie" width="700" height="auto"></div>
-            <div class="led" id="potwierdzenieled"></div> 
-            <div class="led" id="kasowanieled"></div> 
-            <div class="led" id="zasilanieled"></div> 
-            <div class="button" id="potwierdzenie" onclick="potwierdzenie()"></div> 
-            <div class="button" id="kasowanie" onclick="kasowanie()"></div> 
-            <div id="log"></div>
-        </div> 
-         
+        <img src="tło.jpg" alt="Zdjęcie" width="700" height="auto"></div>
+        <!-- Diody LED -->
+        <div class="led1" id="potwierdzenieled"></div>
+        <div class="led2" id="kasowanieled"></div>
+        <div class="led3" id="zasilanieled"></div>
+        <div class="led4" id="pozarLed">POŻAR</div> <!-- Dodano nowy element LED -->
         
-    <script>
+        <div class="button" id="potwierdzenie" onclick="potwierdzenie()"></div>
+        <div class="button" id="kasowanie" onclick="kasowanie()"></div>
+        
+        <div class="buttonenter" id="enter" onclick="enter()"></div>
+        <div class="buttonenterduzy" id="enterduzy" onclick="enterduzy()"></div>
+        
+        <div class="buttonstrzalki" id="strzalkiwysterowanie" onclick="wysterowanie()"></div>
+        <div class="buttonstrzalki" id="strzalkiblokowanie" onclick="blokowanie()"></div>
+        <div class="buttonstrzalki" id="strzalkialarm" onclick="alarm()"></div>
+        <div class="buttonstrzalki" id="strzalkiuszkodzenie" onclick="uszkodzenie()"></div>
+        <div class="buttonstrzalki" id="strzalkiblokowanie2" onclick="blokowanie2()"></div>
+        <div class="buttonstrzalki" id="strzalkitestowanie" onclick="testowanie()"></div>
+        <div class="buttonstrzalki" id="strzalkialarmtechniczny" onclick="alarmtechniczny()"></div>
+        <!-- Przyciski numeryczne -->
+        <div class="buttonstrzalki" id="strzalki0" onclick="zero()"></div>
+        <div class="buttonstrzalki" id="strzalki1" onclick="one()"></div>
+        <div class="buttonstrzalki" id="strzalki2" onclick="two()"></div>
+        <div class="buttonstrzalki" id="strzalki3" onclick="three()"></div>
+        <div class="buttonstrzalki" id="strzalki4" onclick="four()"></div>
+        <div class="buttonstrzalki" id="strzalki5" onclick="five()"></div>
+        <div class="buttonstrzalki" id="strzalki6" onclick="six()"></div>
+        <div class="buttonstrzalki" id="strzalki7" onclick="seven()"></div>
+        <div class="buttonstrzalki" id="strzalki8" onclick="eight()"></div>
+        <div class="buttonstrzalki" id="strzalki9" onclick="nine()"></div>
+        
+        <div class="buttonstrzalki" id="strzalkipersonelnieobecny" onclick="personelnieobecny()"></div>
+        <div class="buttonstrzalki" id="strzalkicofanie" onclick="cofanie()"></div>
+        <input type="text" id="digitDisplay" readonly class="digit-display">
+
+        <!-- Wyświetlacz cyfrowy -->
+        <div id="log"></div>
+        <div class="background-image1">  <img src="Obraz1.png" width="500" height="auto">
+        <audio id="alarmSound" src="alarm.mp3" loop></audio> <!-- Dodano element audio --></div>
+    </div>
+    
+<script>
         let isArmed = false;
         let isAlarmActive = false;
         let isFault = false;
         let zones = Array(8).fill(true); // 8 stref
+        let kasowanieStep = 0;
+        let enteredCode = "";
+        let pozarWcisniety = false;
 
-        function updateLeds() {
+        function updateLeds1() {//zasilanie led
             document.getElementById('zasilanieled').style.backgroundColor = '#2ecc71';
-            document.getElementById('kasowanieled').style.backgroundColor = isAlarmActive ? '#e74c3c' : '#555';
-            document.getElementById('pożarLed').style.backgroundColor = isFault ? '#e67e22' : '#555';
         }
-
+        function updateLeds2() { // kasowanie led
+            document.getElementById('kasowanieled').style.backgroundColor = isAlarmActive ? '#e74c3c' : '#555';
+        }
+        function updateLeds3() {//potwierdzenie led
+            document.getElementById('potwierdzenieled').style.backgroundColor = isAlarmActive ? '#e74c3c' : '#555';
+        }
+        function updateLeds4() {//pożar led
+            document.getElementById('pozarLed').style.backgroundColor = isArmed ? '#e74c3c' : '#555';
+        }
+        function updateLeds5() {
+            document.getElementById('pozarLed').classList.toggle('led-active', isArmed);
+        }
         function log(message) {
             const logDiv = document.getElementById('log');
-            logDiv.innerHTML += `<div>${new Date()
-                .toLocaleTimeString()}:
-                 ${message}</div>`;
+            logDiv.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
             logDiv.scrollTop = logDiv.scrollHeight;
         }
-
+        function showDialog(message) {
+            document.getElementById('dialogText').innerText = message;
+            document.getElementById('dialog').style.display = 'block';
+        }
+        function closeDialog() {
+            document.getElementById('dialog').style.display = 'none';
+        }
         function pożar() {
+            pozarWcisniety = true;
             isArmed = !isArmed;
             isAlarmActive = isArmed; // Ustaw alarm na aktywny, gdy system jest uzbrojony (w przypadku pożaru)
-            document.getElementById('systemStatus')
-            .textContent = `Status:
-             ${isArmed ? 'POŻAR' : 'Skasowany'}`;// Ustaw tekst pola status)
-            log(`. ${isArmed ? 'pożar' : '.'}`);// Ustaw tekst pola log)
-
+            document.getElementById('systemStatus').textContent = `Status: ${isArmed ? 'POŻAR' : 'Skasowany'}`;
+            log(`${isArmed ? 'POŻAR strefa 5, rozdzielnia' : 'skasowany'}`);
+            
+            if (isPersonelActive) {
+            log("Wykryto pożar , personel nieobecny, wysterowanie");
+            wysterowanie(); // Wywołaj funkcję wysterowanie()
+            isPersonelActive = false; // Zresetuj flagę po wywołaniu wysterowanie
+        }
             if (isArmed) {
-                updateLeds(); // Aktualizuj diody
-                potwierdzenieButton.classList.add('miganie'); // Dodajemy klasę 'miganie'
-                kasowanieButton.classList.add('miganie'); // Dodajemy klasę 'miganie'
-            } else {
-                isAlarmActive = false;
-                updateLeds();
-                potwierdzenieButton.classList.remove('miganie'); // Usuwamy klasę 'miganie'
-                kasowanieButton.classList.remove('miganie'); // Usuwamy klasę 'miganie'
+                updateLeds2(); 
+                updateLeds3();
+                updateLeds4();// Aktualizuj diody
+                document.getElementById('potwierdzenieled').classList.add('miganie'); // Dodajemy klasę 'miganie'
+                document.getElementById('kasowanieled').classList.add('miganie'); // Dodajemy klasę 'miganie'
+                document.getElementById('pozarLed').classList.add('miganie'); // Dodajemy klasę 'miganie'
+                document.getElementById('alarmSound').play(); // Odtwarzamy dźwięk alarmu
             }
         }
-
         function potwierdzenie() {
-            if (!isAlarmActive) {
-                isArmed = false;
-                isFault = false;
-                zones = zones.map(() => true);
-                updateLeds();
-                document.getElementById('systemStatus').textContent = 'Status: Normalny';
-                document.getElementById('zonesStatus').textContent = 'Wszystkie OK';
-                log('System zresetowany');
-            }
-        }
-
-        function kasowanie() {
             if (isAlarmActive) {
                 isAlarmActive = false;
-                updateLeds();
+                updateLeds3();
                 log('Alarm wyciszony');
+                document.getElementById('pozarLed').classList.remove('led-active'); // Stop blinking
+                document.getElementById('potwierdzenieled').classList.remove('miganie'); // Stop blinking
+                document.getElementById('alarmSound').pause(); // Zatrzymujemy dźwięk alarmu
+                document.getElementById('alarmSound').currentTime = 0; // Resetujemy dźwięk alarmu
+            }
+        }
+        function kasowanie() {
+            if (!isAlarmActive) { // ... (normalne kasowanie)
+                if (kasowanieStep === 0) {
+                    kasowanieStep = 1;
+                log("Rozpoczęto sekwencję kasowania.");  
+                }
+            } else {
+                kasowanieStep = 1;
+                enteredCode = ""; // Resetujemy kod
+                document.getElementById('digitDisplay').value = ""; // Czyścimy wyświetlacz
+                log("Rozpoczęto sekwencję kasowania.");
+            }
+        }
+
+        function enter() {
+            if (kasowanieStep === 1) {
+                kasowanieStep = 2;
+                log("Wciśnięto ENTER (etap 1).");
+            } else if (kasowanieStep === 3) {
+                kasowanieStep = 4;
+                log("Wciśnięto ENTER (etap 2).");
+            }
+            document.getElementById('digitDisplay').value = 'ENTER';
+        }
+        function enterduzy() {
+            enter();
+            document.getElementById('digitDisplay').value = 'ENTER';
+        }
+
+        function finalizeKasowanie() {
+            if (kasowanieStep === 4) {
+                document.getElementById('pozarLed').classList.remove('miganie');
+                document.getElementById('pozarLed').style.backgroundColor = '#555';
+                document.getElementById('kasowanieled').classList.remove('miganie');
+                document.getElementById('kasowanieled').style.backgroundColor = '#555'; // Resetujemy też kasowanieled
+                log('System wyłączony (po sekwencji).');
+                kasowanieStep = 0;
+                enteredCode = "";
+                document.getElementById('digitDisplay').value = ""; // Czyścimy wyświetlacz
+                isArmed = false;
+                isAlarmActive = false;
+                updateLeds4(); // Aktualizujemy POŻAR LED
+                updateLeds2(); // Aktualizujemy KASOWANIE LED
+                document.getElementById('systemStatus').textContent = 'Status: Normalny';
+                document.getElementById('zonesStatus').textContent = 'Wszystkie OK';
+                document.getElementById('alarmSound').pause();
+                document.getElementById('alarmSound').currentTime = 0;
             }
         }
 
         function resetSystem() {
-            if (!isAlarmActive) {
-                isArmed = false;
-                isFault = false;
-                zones = zones.map(() => true);
-                updateLeds();
-                document.getElementById('systemStatus').textContent = 'Status: Normalny';
-                document.getElementById('zonesStatus').textContent = 'Wszystkie OK';
-                log('System zresetowany');
-            }
+            isArmed = false;
+            isAlarmActive = false;
+            isFault = false;
+            zones = zones.map(() => true);
+            updateLeds1();
+            updateLeds2();
+            updateLeds3();
+            updateLeds4();  
+            updateLeds5();
+            document.getElementById('systemStatus').textContent = 'Status: Normalny';
+            document.getElementById('zonesStatus').textContent = 'Wszystkie OK';
+            document.getElementById('log').innerHTML = ''; // Clear log messages
+            document.getElementById('potwierdzenieled').classList.remove('miganie'); // Stop blinking
+            document.getElementById('kasowanieled').classList.remove('miganie'); // Stop blinking
+            document.getElementById('pozarLed').classList.remove('led-active'); // Stop blinking
+            document.getElementById('pozarLed').classList.remove('miganie'); // Stop blinking
+            document.getElementById('digitDisplay').value = ''; // Clear the digit display
+            document.getElementById('alarmSound').pause(); // Stop the alarm sound
+            document.getElementById('alarmSound').currentTime = 0; // Reset the alarm sound
+            log('System zresetowany');
         }
-/*
-        function checkZones() {
-            if (isArmed) {
-                const randomZone = Math.floor(Math.random() * 8);
-                if (Math.random() < 1) { // 30% szans na awarię strefy
-                    zones[randomZone] = false;
-                    isFault = true;
-                    isAlarmActive = true; // Ustaw isAlarmActive na true w checkZones
-                    document.getElementById('zonesStatus').textContent = `Awaria strefy ${randomZone + 1}`;
-                    log(`Awaria strefy ${randomZone + 1}!`);
-                    updateLeds();
-                }
-            }
-        }
-*/
+
+
+
+        
         function Instrukcje() {
             window.location.href = 'POLON/strona2.html';
         }
 
+        function updateDigitDisplay(digit) {
+            const display = document.getElementById('digitDisplay');
+            if (display.value === 'ENTER' || display.value === 'ENTERDUZY') {
+                display.value = ''; // Clear the display if it shows "ENTER" or "ENTERDUZY"
+            }
+            display.value += digit; // Append the digit
+
+            // Check if the entered code is 2222
+            if (display.value === '2222') {
+                log('Kod poprawny');
+                kasowanieStep = 3; // Move to the next step in the sequence
+            }
+        }
+
+        function zero() { updateDigitDisplay('0'); }
+        function one() { updateDigitDisplay('1'); }
+        function two() { updateDigitDisplay('2'); }
+        function three() { updateDigitDisplay('3'); }
+        function four() { updateDigitDisplay('4'); }
+        function five() { updateDigitDisplay('5'); }
+        function six() { updateDigitDisplay('6'); }
+        function seven() { updateDigitDisplay('7'); }
+        function eight() { updateDigitDisplay('8'); }
+        function nine() { updateDigitDisplay('9'); }
+
+        function cofanie() {
+            document.getElementById('digitDisplay').value = ''; // Clear the digit display
+        }
+
         // Inicjalizacja
-        updateLeds();
-        log('System gotowy do pracy');
+        document.addEventListener('DOMContentLoaded', (event) => {
+            updateLeds1();
+            updateLeds2();
+            updateLeds3();
+            updateLeds4();
+            updateLeds5();
+            console.log('System gotowy do pracy');
+            log('System gotowy do pracy');
+        });
+
+        // Event listeners for the sequence
+        document.getElementById('kasowanie').addEventListener('click', kasowanie);
+        document.getElementById('enter').addEventListener('click', enter);
+        document.getElementById('enterduzy').addEventListener('click', enter);
+        document.getElementById('enter').addEventListener('click', enter);
+        document.getElementById('enterduzy').addEventListener('click', enter);
+        document.getElementById('kasowanie').addEventListener('click', finalizeKasowanie);
+    
+let isPozarButtonBlocked = false;
+
+    function togglePozarButton() {
+        if (!isPozarButtonBlocked) {
+            isPozarButtonBlocked = true;
+            document.querySelector('.button1[onclick="pożar()"]').classList.add('disabled');
+            document.querySelector('.button1[onclick="pożar()"]').style.backgroundColor = '#7f8c8d';
+            document.querySelector('.button1[onclick="pożar()"]').style.cursor = 'default';
+            document.querySelector('.button1[onclick="pożar()"]').onclick = null;
+            log("Zablokowano przycisk POŻAR.");
+        } else {
+            isPozarButtonBlocked = false;
+            document.querySelector('.button1[onclick="pożar()"]').classList.remove('disabled');
+            document.querySelector('.button1[onclick="pożar()"]').style.backgroundColor = '#34495e';
+            document.querySelector('.button1[onclick="pożar()"]').style.cursor = 'pointer';
+            document.querySelector('.button1[onclick="pożar()"]').onclick = pożar;
+            log("Odblokowano przycisk POŻAR.");
+        }
+    }
+    function blokowanie() {
+        togglePozarButton();
+    }
+
+    function blokowanie2() {
+        togglePozarButton();
+    }   
+    
+let isWysterowanieActive = false;
+    
+    function wysterowanie() {
+        if (!isWysterowanieActive) {
+            pożar();
+            isWysterowanieActive = true;
+            log("Wciśnięto przycisk Wysterowanie - aktywowano POŻAR.");
+        } else {
+            resetSystem();
+            isWysterowanieActive = false;
+            log("Wciśnięto przycisk Wysterowanie - zresetowano system.");
+        }
+    }
+    
+let isPersonelActive = false;
+
+function personelnieobecny() {
+        log ("wciśnięto przycisk 'personel nieobecny'");
+        isPersonelActive = true; // Ustaw flagę na true po wciśnięciu przycisku
+    }
+
+
+
     </script>
 </body>
 </html>
